@@ -14,8 +14,6 @@
       ./desktop-environment.nix
       ./locale.nix
     ];
-
-  home-manager.users.alezkar = import ./home.nix;
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
