@@ -3,6 +3,7 @@
 {
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    neovim
     onlyoffice-bin
     gnumake
     postman
@@ -84,5 +85,10 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig:$PKG_CONFIG_PATH";
+  };
+  programs.neovim = {
+	enable = true;
+	viAlias = true;
+	vimAlias = true;
   };
 }

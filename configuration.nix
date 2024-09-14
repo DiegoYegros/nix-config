@@ -15,6 +15,7 @@
       ./locale.nix
     ];
 
+  home-manager.users.alezkar = import ./home.nix;
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -59,24 +60,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
   # Clona el repositorio de Neovim durante la reconstrucción de NixOS
-  environment.systemPackages = with pkgs; [
-    (pkgs.fetchGit {
-      url = "https://github.com/diegoyegros/dotfiles.git"; # Reemplaza con tu repositorio
-      rev = "master";  # O el branch/tag específico que desees
-    })
-  ];
 
-  # Copia la configuración al directorio correspondiente
-  environment.etc."nvim".source = "${pkgs.fetchGit { 
-    url = "https://github.com/diegoyegros/dotfiles.git";
-    rev = "master";
-  }}/nvim/init.lua";
-
-  # Instala Neovim
-  programs.neovim = {
-    enable = true;
-    configure = true;  # Para asegurarte de que se enlace con tu configuración
-  };
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.alezkar = {
     isNormalUser = true;
