@@ -27,7 +27,6 @@
     wofi
     wl-clipboard
     grim
-    kitty
     rofi-wayland
     swww
     pkgs.dunst
@@ -50,7 +49,6 @@
     rustup
     cargo
     vscode
-    neovim
     wget
     brave
     git
