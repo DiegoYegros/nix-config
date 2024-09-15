@@ -1,8 +1,27 @@
 { config, pkgs, ... }:
 
+let
+  neovimConfig = pkgs.fetchFromGitHub {
+    owner = "diegoyegros";
+    repo = "dotfiles";
+    rev = "master";
+    sha256 = "sha256-2Jvq7gQVQA/NTU8vs99t2Wh80gJKV3MijbZjq+TcHk4="; # Make sure this is the correct hash
+  };
+  # Fetch Lazy.nvim
+  lazy-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "lazy-nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "folke";
+      repo = "lazy.nvim";
+      rev = "main"; # You might want to pin this to a specific version
+      sha256 = "sha256-qERgCq8exkdVQok72TAU1+xvTiy2wxcjsVwoHE59kOc="; # Add the correct hash here
+    };
+  };
+in
 {
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
+  # ... (keep your existing package definitions)
+environment.systemPackages = with pkgs; [
+    vlc
     neovim
     onlyoffice-bin
     gnumake
@@ -87,8 +106,43 @@
     PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig:$PKG_CONFIG_PATH";
   };
   programs.neovim = {
-	enable = true;
-	viAlias = true;
-	vimAlias = true;
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    configure = {
+      customRC = ''
+        set runtimepath^=${neovimConfig}/nvim
+        set packpath^=${neovimConfig}/nvim
+        let g:config_path = '${neovimConfig}/nvim'
+        lua << EOF
+        -- Add the config path to package.path
+        package.path = package.path .. ";${neovimConfig}/nvim/?.lua;${neovimConfig}/nvim/?/init.lua"
+        
+        -- Set up lazy.nvim
+        local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+        if not vim.loop.fs_stat(lazypath) then
+          vim.fn.system({
+            "git",
+            "clone",
+            "--filter=blob:none",
+            "https://github.com/folke/lazy.nvim.git",
+            "--branch=stable",
+            lazypath,
+          })
+        end
+        vim.opt.rtp:prepend(lazypath)
+        
+        -- Now load your init.lua
+        require('init')
+        EOF
+      '';
+      packages.myVimPackage = with pkgs.vimPlugins; {
+        start = [
+          lazy-nvim
+          # Add other plugins that need to be available immediately
+        ];
+        opt = [ ];
+      };
+    };
   };
 }
