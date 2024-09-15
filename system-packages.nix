@@ -21,13 +21,14 @@ in
 {
   # ... (keep your existing package definitions)
 environment.systemPackages = with pkgs; [
+    gnome-extension-manager
     vlc
     neovim
     onlyoffice-bin
     gnumake
     postman
     typescript
-    ungoogled-chromium
+    chromium
     busybox
     maven
     jdk21_headless
@@ -89,6 +90,7 @@ environment.systemPackages = with pkgs; [
     gtk3
     gtk4
     glib
+    google-chrome
     gnome.adwaita-icon-theme
     alacritty
     (pkgs.makeDesktopItem {
