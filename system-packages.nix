@@ -35,6 +35,7 @@ environment.systemPackages = with pkgs; [
     grim
     slurp
     wl-clipboard
+    bottles
     mako
     xwayland
     go
