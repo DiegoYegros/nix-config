@@ -21,6 +21,7 @@ in
 {
   # ... (keep your existing package definitions)
 environment.systemPackages = with pkgs; [
+    ventoy-full
     gnome-extension-manager
     vlc
     neovim
